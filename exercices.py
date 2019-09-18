@@ -9,7 +9,6 @@ def getNumberOrLetter(min, max, p, nbLetter=4):
   else:
     return str(randint(min,max))
 
-
 def getPolynomeDerivation():
     result = ""
     n = random.randint(2,6)
@@ -38,7 +37,7 @@ def getMatrix(m=0,n=0, p=0):
     return result
 
 def getMatrixSum(nbEx=1):
-    result="Calculer les sommes suivantes:\\\\"
+    result="Calculer les sommes suivantes:\\\\\n"
     for i in range (nbEx):
         m= randint(1,4)
         n= randint(1,4)
@@ -47,9 +46,8 @@ def getMatrixSum(nbEx=1):
         result+="$$ " + matA + "+" + matB + " = $$\n"
     return result
 
-
 def getMatrixProduct(nbEx=1):
-    result="Calculer les produits suivants:\\\\"
+    result="Calculer les produits suivants:\\\\\n"
     for i in range (nbEx):
         m= randint(1,4)
         n= randint(1,4)
@@ -59,3 +57,49 @@ def getMatrixProduct(nbEx=1):
         result+="$$ " + matA + "\\times" + matB + " = $$\n"
     return result
 
+def getAbsoluteEq(nbEx = 1, onlyInteger = True):
+  ops=["+","-"]
+  result="""
+  Résoudre les équations suivantes:
+  \\begin{itemize}\n
+  \\begin{multicols}{2}\n"""
+  for i in range(nbEx):
+    if (onlyInteger):
+      v = randint(1,9)
+      r = randint(1,9)
+    else:
+      v = round(random()*10,1)
+      r = round(random()*10,1)
+    op = ops[randint(0,len(ops)-1)]
+    p=0.2
+    if (random()<p):#forme |a=x|=b
+      result+="\item $|"+str(v)+op+"x| = "+str(r)+"\hspace{1cm} x = ......... $ ou $x = .........$\n"
+    else:#forme |a=x|=b
+      result+="\item $|x"+op+str(v)+"| = "+str(r)+"\hspace{1cm} x = ......... $ ou $x = .........$\n"
+  result+="\end{multicols}\n\\end{itemize}" 
+  return result
+
+def getAbsoluteIneq(nbEx = 1, onlyInteger = True):
+  ops=["+","-"]
+  ineqs=["<",">","<=",">="]
+  result="""
+  Résoudre les inéquations suivantes:
+  \\begin{itemize}\n
+  \\begin{multicols}{2}\n"""
+  for i in range(nbEx):
+    if (onlyInteger):
+      v = randint(1,9)
+      r = randint(1,9)
+    else:
+      v = round(random()*10,1)
+      r = round(random()*10,1)
+    op = ops[randint(0,len(ops)-1)]
+    ineq = ineqs[randint(0,len(ineqs)-1)]
+    p=0.2
+    if (random()<p):#forme |a=x|=b
+      result+="\item $|"+str(v)+op+"x|"
+    else:#forme |a=x|=b
+      result+="\item $|x"+op+str(v)+"|"
+    result+=  ineq+str(r)+"\hspace{1cm} x \in ..................$\n"
+  result+="\end{multicols}\n\\end{itemize}" 
+  return result
