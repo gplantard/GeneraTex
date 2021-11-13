@@ -1,4 +1,8 @@
+from Tools import getValideName, LatexFontSize
+
 class Point:
+    possibleName = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
     def __init__(self, x, y):
         self.x = x
         self.y = y
@@ -16,11 +20,77 @@ class Droite:
     def fromAffine(a, b):
         return Droite(a,-1, b)
 
+    def getCoefDirecteur(self):
+        if self.b == 0:
+            return None
+        else:
+            return -self.a/self.b
+
     def getImage(self, x):
-        if self.b == None: # droite parallèle à l'axe des abscisses
+        if self.b == None: # droite parallèle à l'axe des ordonnées
             return None
         else:
             return (-self.a * x - self.c)/self.b
+
+    def getAntecedent(self, y):
+        if self.a == None: # droite parallèle à l'axe des abscisses
+            return None
+        else:
+            return (-self.b * y - self.c)/self.a
+
+    def clip(self, xmin, xmax, ymin , ymax):
+        if self.a == 0: #droite parallèle aux abscisses
+            k = -self.c/self.b
+            if k < ymin + 1:
+                v = "above"
+            else:
+                v = "below"
+            return ((xmin, k), (xmax, k), f"{v} left")
+        elif self.b == 0: # Droite parallèle aux ordonnées
+            k = -self.c/self.a
+            if k > xmax - 1:
+                h = "right"
+            else:
+                h = "left"
+            return ((xmin, k),(xmax, k),  f"below {h}")
+        else:
+            v = "below"
+            h = "left"
+            p1 = (self.getAntecedent(ymin), ymin)
+            p2 = (self.getAntecedent(ymax), ymax)
+            p3 = (xmin, self.getImage(xmin))
+            p4 = (xmax, self.getImage(xmax))
+
+            if self.getCoefDirecteur() > 0:
+                if p1[0] < p3[0]:
+                    pgauche = p3
+                else:
+                    pgauche = p1
+
+                if p2[0] > p4[0]:
+                    pdroite = p4
+                    v = "above"
+                    h = "left"
+                else:
+                    pdroite = p2
+                    v = "below"
+                    h = "right"
+            else:
+                if p2[0] < p3[0]:
+                    pgauche = p3
+                else:
+                    pgauche = p2
+
+                if p1[0] > p4[0]:
+                    pdroite = p4
+                    v = "below"
+                    h = "left"
+                else:
+                    pdroite = p1
+                    v = "above"
+                    h = "right"
+
+            return (pgauche, pdroite, f"{v} {h}")
 
     def __repr__(self):
         return f"{self.a}x+{self.b}y+{self.c}=0"
@@ -45,7 +115,7 @@ class Droite:
 
 
 class Repere:
-    def __init__(self, xmin = -5, xmax = 5,  ymin = -3, ymax = 5, xStep = 1, yStep = 1, xUnitVect=(1,0), yUnitVect = (0,1)):
+    def __init__(self, xmin = -5.5, xmax = 5.5,  ymin = -3.5, ymax = 5.5, xStep = 1, yStep = 1, xUnitVect=(.5,0), yUnitVect = (0,.5)):
         self.xmin = xmin
         self.xmax = xmax
         self.ymin = ymin
@@ -56,7 +126,7 @@ class Repere:
         self.yUnitVect = yUnitVect
         self.cartesien = False
 
-    def render(self):
+    def render(self, forceClip = False):
         result=""
         if self.cartesien:
 
@@ -88,6 +158,7 @@ class Repere:
             result += "\\draw [axe,thick] (0,0)--(1,0) node[below left]  {$\\vec{i}$};\n"
             result += "\\draw [axe,thick] (0,0)--(0,1) node[below left] {$\\vec{j}$};\n"
 
+        if forceClip:
             result += "% Clip pour que les figures ne sortent pas du cadre\n"
             result += "\\clip (\\xmin,\\ymin) rectangle (\\xmax,\\ymax);\n"
 
@@ -103,59 +174,59 @@ class Graphique:
 
     def addPoint(self, x, y, nom=""):
         if nom == "":
-            index = 0
-            nom = "_"+str(index)
-            while nom in self.points.keys():
-                index += 1
-                nom = "_"+str(index)
+            nom = getValideName("A", self.points.keys(), Point.possibleName)
         self.points[nom] = Point(x,y)
 
     def addDroite(self, a, b, c, nom = ""):
         if nom == "":
-            index = 0
-            nom = "_"+str(index)
-            while nom in self.droites.keys():
-                index += 1
-                nom = "_"+str(index)
+            nom = getValideName("d", self.droites.keys())
         self.droites[nom]= Droite(a,b,c)
 
     def addAffine(self, a, b, nom=""):
         if nom == "":
-            index = 0
-            nom = "_"+str(index)
-            while nom in self.points.keys():
-                index += 1
-                nom = "_"+str(index)
+            nom = getValideName("d", self.droites.keys())
         self.droites[nom] = Droite.fromAffine(a,b)
 
 
 
-    def renderPoints(self, size = 4):
-        pointListStr = "{"
-        for name, p in self.points.items():
-            pointListStr += str((p.x, p.y))
-        pointListStr += "}"
+    def renderPoints(self, size = 4, withLabel = True, labelSize = LatexFontSize.normalsize):
         result = ""
-        result += "\\draw plot[only marks,mark=x,mark size="+str(size)+"pt] coordinates"
-        result += pointListStr
-        result += ";\n"
+        if withLabel:
+            for name, p in self.points.items():
+                result +="\\draw plot[only marks,mark=x,mark size="+str(size)+"pt] coordinates "
+                result += "{"+str((p.x, p.y))+"}"
+                result += " node["+self.getNodePosition(p.x, p.y)+"]{\\"+labelSize+"{$"+name+"$}}"
+                result += ";\n"
+        else:
+            pointListStr = "{"
+            for name, p in self.points.items():
+                pointListStr += str((p.x, p.y))
+            pointListStr += "}"
+
+            result += "\\draw plot[only marks,mark=x,mark size="+str(size)+"pt] coordinates"
+            result += pointListStr
+            result += ";\n"
         return result
 
-    def renderDroites(self):
+    def renderDroites(self, width = 1, withLabel = True, labelSize = LatexFontSize.normalsize):
         #\draw (0,0) -- (1,1);
         result = ""
         for nom, d in self.droites.items():
-            if d.b != 0:
-                image0 = d.getImage(self.repere.xmin)
-                image10 = d.getImage(self.repere.xmax)
-                result += "\\draw "+str((self.repere.xmin, image0))+" -- "+str((self.repere.xmax, image10))+";"
-            else:
-                x = -d.c/d.a
-                result += "\\draw "+str((x, self.repere.ymin))+" -- "+str((x, self.repere.ymax))+";"
+            xmin = self.repere.xmin
+            xmax = self.repere.xmax
+            ymin = self.repere.ymin
+            ymax = self.repere.ymax
+            pgauche, pdroite, position = d.clip(xmin, xmax, ymin, ymax)
+
+            result += "\\draw [line width="+str(width)+"pt, cap=round] "+str(pgauche)+" -- "+str(pdroite)
+
+            if withLabel:
+                result += " node["+position+"]{\\"+labelSize+"{$("+nom+")$}}"
+            result += ";\n"
         return result
 
 
-    def render(self):
+    def render(self, labelSize = LatexFontSize.normalsize):
         if self.repere.cartesien:
             result = "\\begin{tikzpicture}\n"
         else:
@@ -164,11 +235,26 @@ class Graphique:
         result += self.repere.render()
         # Code des points
         result += "\n%Codage des points\n"
-        result += self.renderPoints()
+        result += self.renderPoints(labelSize = labelSize)
 
         #Code des droites
         result += "\n%Codage des droites\n"
-        result += self.renderDroites()
+        result += self.renderDroites(labelSize = labelSize)
 
         result += "\\end{tikzpicture}\n"
         return result
+
+    def getNodePosition(self, x, y):
+        h = ""
+        v = ""
+        if x > self.repere.xmax - self.repere.xUnitVect[0]-self.repere.xStep:
+            h="left"
+        else:
+            h ="right"
+        if y > self.repere.ymax - self.repere.yUnitVect[1]-self.repere.yStep:
+            v = "below"
+        else:
+            v ="above"
+
+        return f"{v} {h}"
+

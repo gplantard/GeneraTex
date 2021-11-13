@@ -1,4 +1,4 @@
-from Tools import randomValue
+from Tools import randomValue, LatexFontSize
 import random
 from graphique import Graphique, Repere
 """
@@ -18,6 +18,7 @@ def samples():
     #result["getRepereCart(xStep=.5, yStep=2)"] = getRepereCart(xStep=.5, yStep=2)
 
     result["getLectureAffine()"] = getLectureAffine()
+    result["getLectureAffine(nbDroite = 3)"] = getLectureAffine(nbDroite = 3)
     return result
 
 """
@@ -41,14 +42,24 @@ def getRepere(xmin = -3.5, xmax = 3.5, ymin=-2.5, ymax = 2.5, xStep = 1, yStep =
     return graph.render()
 
 
-def getLectureAffine(nbDroite = 1 ):
+def getLectureAffine(nbDroite = 1 , labelSize = LatexFontSize.large):
     result = ""
     graph = Graphique()
-    graph.addPoint(1,2)
-    graph.addDroite(-2,3, -3)
-    graph.addAffine(-.5,2)
-    graph.addDroite(1,0, 3)
-    return graph.render()
+    graph.repere = Repere(xUnitVect = (1,0), yUnitVect = (0,1))
+
+    graph.addPoint(1,2, "B")
+
+    for i in range(nbDroite):
+        a = randomValue(-5, 5)
+        b = randomValue(1, 5)
+        if random.random() > .5:
+            b = -b
+        c = randomValue(graph.repere.ymin, graph.repere.ymax)
+        graph.addAffine(a/b,c)
+
+    #graph.addAffine(-1/4,-2, nom="test")
+
+    return graph.render(labelSize)
 
 
 
