@@ -14,9 +14,13 @@ class Droite:
 
     @staticmethod
     def fromAffine(a, b):
-        self.a = a
-        self.b = -1
-        self.c = b
+        return Droite(a,-1, b)
+
+    def getImage(self, x):
+        if self.b == None: # droite parallèle à l'axe des abscisses
+            return None
+        else:
+            return (-self.a * x - self.c)/self.b
 
     def __repr__(self):
         return f"{self.a}x+{self.b}y+{self.c}=0"
@@ -103,7 +107,52 @@ class Graphique:
             nom = "_"+str(index)
             while nom in self.points.keys():
                 index += 1
+                nom = "_"+str(index)
         self.points[nom] = Point(x,y)
+
+    def addDroite(self, a, b, c, nom = ""):
+        if nom == "":
+            index = 0
+            nom = "_"+str(index)
+            while nom in self.droites.keys():
+                index += 1
+                nom = "_"+str(index)
+        self.droites[nom]= Droite(a,b,c)
+
+    def addAffine(self, a, b, nom=""):
+        if nom == "":
+            index = 0
+            nom = "_"+str(index)
+            while nom in self.points.keys():
+                index += 1
+                nom = "_"+str(index)
+        self.droites[nom] = Droite.fromAffine(a,b)
+
+
+
+    def renderPoints(self, size = 4):
+        pointListStr = "{"
+        for name, p in self.points.items():
+            pointListStr += str((p.x, p.y))
+        pointListStr += "}"
+        result = ""
+        result += "\\draw plot[only marks,mark=x,mark size="+str(size)+"pt] coordinates"
+        result += pointListStr
+        result += ";\n"
+        return result
+
+    def renderDroites(self):
+        #\draw (0,0) -- (1,1);
+        result = ""
+        for nom, d in self.droites.items():
+            image0 = d.getImage(self.repere.xmin)
+            image10 = d.getImage(self.repere.xmax)
+            result += "\n% code de "+nom+"\n"
+            result += "% point de référence:\n"
+            result += str((self.repere.xmin, image0))+"\n"
+            result += str((self.repere.xmax, image10))+"\n"
+            result += "\\draw "+str((self.repere.xmin, image0))+" -- "+str((self.repere.xmax, image10))+";"
+        return result
 
 
     def render(self):
@@ -111,6 +160,15 @@ class Graphique:
             result = "\\begin{tikzpicture}\n"
         else:
             result = "\\begin{tikzpicture}[x="+str(self.repere.xUnitVect[0])+"cm,y="+str(self.repere.yUnitVect[1])+"cm]"
+        # Code du repère
         result += self.repere.render()
-        result += "\\end{tikzpicture}"
+        # Code des points
+        result += "\n%Codage des points\n"
+        result += self.renderPoints()
+
+        #Code des droites
+        result += "\n%Codage des droites\n"
+        result += self.renderDroites()
+
+        result += "\\end{tikzpicture}\n"
         return result

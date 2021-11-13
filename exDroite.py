@@ -12,7 +12,6 @@ def samples():
     #result["getRepere(xStep = .5, yStep = 2)"] = getRepere(xStep = .5, yStep = 2)
     #result["getRepere(xunit = .8, yunit=1.6) (en cm)"] = getRepere(xunit = .8, yunit=1.6)
 
-    #getRepereCart(xmin=-5, xmax = 5, ymin = -3, ymax=5, xUnitVect=(1,0), yUnitVect=(0,1)):
     #result["getRepereCart()"] = getRepereCart()
     #result["getRepereCart(xmin=-2, xmax = 8, ymin = 0, ymax=5)"] = getRepereCart(xmin=-2, xmax = 8, ymin = 0, ymax=5)
     #result["getRepereCart(xUnitVect=(.5,0), yUnitVect=(-1,1))"] = getRepereCart(xUnitVect=(.5,0), yUnitVect=(-1,1))
@@ -45,8 +44,11 @@ def getRepere(xmin = -3.5, xmax = 3.5, ymin=-2.5, ymax = 2.5, xStep = 1, yStep =
 def getLectureAffine(nbDroite = 1 ):
     result = ""
     graph = Graphique()
-    graph.addPoint(2,3)
-    return result
+    graph.addPoint(1,2)
+    graph.addDroite(-2,3, -3)
+    graph.addAffine(-.5,2)
+    return graph.render()
+
 
 
 
