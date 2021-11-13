@@ -41,7 +41,7 @@ class Droite:
 
 
 class Repere:
-    def __init__(self, xmin = -5, xmax = 5,  xStep = 1, ymin = -3, ymax = 5, yStep = 1, xUnitVect=(1,0), yUnitVect = (0,1)):
+    def __init__(self, xmin = -5, xmax = 5,  ymin = -3, ymax = 5, xStep = 1, yStep = 1, xUnitVect=(1,0), yUnitVect = (0,1)):
         self.xmin = xmin
         self.xmax = xmax
         self.ymin = ymin
@@ -99,7 +99,10 @@ class Graphique:
 
 
     def render(self):
-        result = "\\begin{tikzpicture}[x="+str(self.repere.xUnitVect[0])+"cm,y="+str(self.repere.yUnitVect[1])+"cm]"
+        if self.repere.cartesien:
+            result = "\\begin{tikzpicture}\n"
+        else:
+            result = "\\begin{tikzpicture}[x="+str(self.repere.xUnitVect[0])+"cm,y="+str(self.repere.yUnitVect[1])+"cm]"
         result += self.repere.render()
         result += "\\end{tikzpicture}"
         return result
