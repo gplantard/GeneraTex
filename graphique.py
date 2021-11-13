@@ -97,6 +97,14 @@ class Graphique:
         self.points = {}
         self.droites = {}
 
+    def addPoint(self, x, y, nom=""):
+        if nom == "":
+            index = 0
+            nom = "_"+str(index)
+            while nom in self.points.keys():
+                index += 1
+        self.points[nom] = Point(x,y)
+
 
     def render(self):
         if self.repere.cartesien:

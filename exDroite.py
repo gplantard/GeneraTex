@@ -7,16 +7,18 @@ ATTENTION : Pensez à ajouter un exempel dans la fonction ``sample`` afin de pou
 
 def samples():
     result = {}
-    result["getRepere()"] = getRepere()
-    result["getRepere(xmin = -2, xmax = 2, ymin=-2.5, ymax = 3.5)"] = getRepere(xmin = -2, xmax = 2, ymin=-2.5, ymax = 3.5)
-    result["getRepere(xStep = .5, yStep = 2)"] = getRepere(xStep = .5, yStep = 2)
-    result["getRepere(xunit = .8, yunit=1.6) (en cm)"] = getRepere(xunit = .8, yunit=1.6)
+    #result["getRepere()"] = getRepere()
+    #result["getRepere(xmin = -2, xmax = 2, ymin=-2.5, ymax = 3.5)"] = getRepere(xmin = -2, xmax = 2, ymin=-2.5, ymax = 3.5)
+    #result["getRepere(xStep = .5, yStep = 2)"] = getRepere(xStep = .5, yStep = 2)
+    #result["getRepere(xunit = .8, yunit=1.6) (en cm)"] = getRepere(xunit = .8, yunit=1.6)
 
-     #getRepereCart(xmin=-5, xmax = 5, ymin = -3, ymax=5, xUnitVect=(1,0), yUnitVect=(0,1)):
-    result["getRepereCart()"] = getRepereCart()
-    result["getRepereCart(xmin=-2, xmax = 8, ymin = 0, ymax=5)"] = getRepereCart(xmin=-2, xmax = 8, ymin = 0, ymax=5)
-    result["getRepereCart(xUnitVect=(.5,0), yUnitVect=(-1,1))"] = getRepereCart(xUnitVect=(.5,0), yUnitVect=(-1,1))
-    result["getRepereCart(xStep=.5, yStep=2)"] = getRepereCart(xStep=.5, yStep=2)
+    #getRepereCart(xmin=-5, xmax = 5, ymin = -3, ymax=5, xUnitVect=(1,0), yUnitVect=(0,1)):
+    #result["getRepereCart()"] = getRepereCart()
+    #result["getRepereCart(xmin=-2, xmax = 8, ymin = 0, ymax=5)"] = getRepereCart(xmin=-2, xmax = 8, ymin = 0, ymax=5)
+    #result["getRepereCart(xUnitVect=(.5,0), yUnitVect=(-1,1))"] = getRepereCart(xUnitVect=(.5,0), yUnitVect=(-1,1))
+    #result["getRepereCart(xStep=.5, yStep=2)"] = getRepereCart(xStep=.5, yStep=2)
+
+    result["getLectureAffine()"] = getLectureAffine()
     return result
 
 """
@@ -40,8 +42,10 @@ def getRepere(xmin = -3.5, xmax = 3.5, ymin=-2.5, ymax = 2.5, xStep = 1, yStep =
     return graph.render()
 
 
-def getLectureAffine():
+def getLectureAffine(nbDroite = 1 ):
     result = ""
+    graph = Graphique()
+    graph.addPoint(2,3)
     return result
 
 
