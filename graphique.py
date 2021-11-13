@@ -145,13 +145,13 @@ class Graphique:
         #\draw (0,0) -- (1,1);
         result = ""
         for nom, d in self.droites.items():
-            image0 = d.getImage(self.repere.xmin)
-            image10 = d.getImage(self.repere.xmax)
-            result += "\n% code de "+nom+"\n"
-            result += "% point de référence:\n"
-            result += str((self.repere.xmin, image0))+"\n"
-            result += str((self.repere.xmax, image10))+"\n"
-            result += "\\draw "+str((self.repere.xmin, image0))+" -- "+str((self.repere.xmax, image10))+";"
+            if d.b != 0:
+                image0 = d.getImage(self.repere.xmin)
+                image10 = d.getImage(self.repere.xmax)
+                result += "\\draw "+str((self.repere.xmin, image0))+" -- "+str((self.repere.xmax, image10))+";"
+            else:
+                x = -d.c/d.a
+                result += "\\draw "+str((x, self.repere.ymin))+" -- "+str((x, self.repere.ymax))+";"
         return result
 
 

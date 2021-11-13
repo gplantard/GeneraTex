@@ -47,6 +47,7 @@ def getLectureAffine(nbDroite = 1 ):
     graph.addPoint(1,2)
     graph.addDroite(-2,3, -3)
     graph.addAffine(-.5,2)
+    graph.addDroite(1,0, 3)
     return graph.render()
 
 
