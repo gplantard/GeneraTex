@@ -1,6 +1,18 @@
 import random
 lettres = "abcdefghxyz"
 
+class LatexFontSize:
+    tiny = "tiny"
+    scriptsize = "scriptsize"
+    footnotesize = "footnotesize"
+    small = "small"
+    normalsize = "normalsize"
+    large = "large"
+    Large = "Large"
+    LARGE = "LARGE"
+    huge = "huge"
+    Huge = "Huge"
+
 def getNumberOrLetter(min, max, p, possibleLetters=None):
   if (random.random()<p): # on choisit une lettre plustôt qu'un nombre
     if possibleLetters == None:
@@ -14,6 +26,21 @@ def randomValue(min, max, nbDigit=0):
     if nbDigit == 0:
         return int(result)
     return result
+
+def getValideName(defaultName, usedNameList, PossibleName = None):
+    if defaultName in usedNameList:
+        # On recherche dans la liste proposé si il y a une possibilité
+        if PossibleName != None:
+            for n in PossibleName:
+                if n not in usedNameList:
+                    return n
+        # On rajoute un nombre en indice
+        index = 1
+        while defaultName+"_"+str(index) in usedNameList:
+            index += 1
+        return defaultName+"_"+str(index)
+    return defaultName
+
 
 
 def getMatrix(m=None,n=None, p=0, min = -5, max = 5):
