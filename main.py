@@ -7,6 +7,7 @@ import pyperclip
 import exMatrice
 import exEquation
 import exDroite
+import exFraction
 
 #generate2nd.run()
 #generateTermEsSpe.run()
@@ -21,7 +22,10 @@ def getSamples(modulesNames = None):
             sampleDocument += "\\section {Module " + mod + "}\n"
             sampleDocument += "\\begin{itemize}\n"
             for function, result in modulesList[mod].samples().items():
-                sampleDocument +=  f"\\item {function} :\\\\ \n{result}\n"
+                if mod in ["exDroite", "exEquation"]:
+                    sampleDocument +=  f"\\item {function} :\\\\ \n{result}\n"
+                else:
+                    sampleDocument +=  f"\\item {function} :\\\\ \n$${result}$$\n"
             sampleDocument += "\\end{itemize}\n"
     print (sampleDocument)
 
@@ -30,4 +34,4 @@ def getSamples(modulesNames = None):
     return sampleDocument
 
 getSamples()
-#getSamples(["exDroite"])
+#getSamples(["exFraction"])
