@@ -204,7 +204,7 @@ class Calcul:
         if self.op == "**" or "^":
             return left ** right
 
-
+"""
 #expression ="1*2-34+5*6-8²"
 #expression ="1+(2-(3+4)*5)/((6-7)^2*8)²"
 #expression ="1+2-(f+4)*e²+((6-7)^2*8)²"
@@ -214,5 +214,5 @@ print (calcul)
 #calcul = Calcul(1, 2, "+")
 print("Code Latex :")
 print("$$"+calcul.toLatex()+"$$")
-
+"""
 
