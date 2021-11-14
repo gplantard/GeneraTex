@@ -149,23 +149,28 @@ class Calcul:
             return self.left
         if type(self.left) == Calcul:
             left = self.left.eval()
+        else:
+            left = eval(self.left)
         if type(self.right) == Calcul:
             right = self.right.eval()
-        if op == "+":
-            return left+right
-        if op == "-":
+        else :
+            right = eval(self.right)
+
+        if self.op == "+":
+            return left + right
+        if self.op == "-":
             return left - right
-        if op == "*":
+        if self.op == "*":
             return left * right
-        if op == "/":
+        if self.op == "/":
             return left / right
-        if op == "**" or "^":
+        if self.op == "**" or "^":
             return left ** right
 
 
 #expression ="1*2-34+5*6-8²"
-expression ="1+2*(3+4)*5+((6-7)^2*8)²"
-expression ="1+2-(f+4)*e²+((6-7)^2*8)²"
+expression ="1+2-(3+4)*5+((6-7)^2*8)²"
+#expression ="1+2-(f+4)*e²+((6-7)^2*8)²"
 #expression ="1+2*(3+4)"
 print(f"convertion de \n {expression} : ")
 calcul = Calcul.fromExpression(expression)
@@ -173,5 +178,6 @@ print("Calcul obtenu : ")
 print (calcul)
 #calcul = Calcul(1, 2, "+")
 print(calcul.toNPI())
+print(calcul.eval())
 
 
