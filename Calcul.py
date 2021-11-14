@@ -1,4 +1,5 @@
 from sys import stderr
+
 class Calcul:
     def __init__(self, left, right, op):
 
@@ -114,13 +115,16 @@ class Calcul:
         while i < len(expression):
             c = expression[i]
             if c in operations:
-                result.append(temp)
-                temp = ""
-                if c=="²":
-                    result.append("^")
-                    temp = '2'
+                if temp=="" and c=="-":# moins de négation:
+                    temp += "-"
                 else:
-                    result.append(c)
+                    result.append(temp)
+                    temp = ""
+                    if c=="²":
+                        result.append("^")
+                        temp = '2'
+                    else:
+                        result.append(c)
             elif c == "(":
                 j = parenthese[i]
                 result.append(Calcul.fromExpression(expression[i+1: j]))
@@ -128,7 +132,7 @@ class Calcul:
             elif isinstance(c, Calcul):
                 result.append(c)
             else:
-                temp += c
+                temp += str(c)
             i+=1
         result.append(temp)
         #conversion du tableau en calcul
@@ -204,7 +208,7 @@ class Calcul:
 #expression ="1*2-34+5*6-8²"
 #expression ="1+(2-(3+4)*5)/((6-7)^2*8)²"
 #expression ="1+2-(f+4)*e²+((6-7)^2*8)²"
-expression ="(1/2)^2"
+expression ="(1/-2)^2"
 calcul = Calcul.fromExpression(expression)
 print (calcul)
 #calcul = Calcul(1, 2, "+")
