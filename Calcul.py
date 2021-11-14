@@ -123,6 +123,10 @@ class Calcul:
         return pile[0]
 
     @staticmethod
+    def fromNPI(expression):
+        return Calcul.fromNPIArray(expression.strip().split(" "))
+
+    @staticmethod
     def extractParenthese(expression):
         pile = []
         couple_list = {}
@@ -178,6 +182,8 @@ print("Calcul obtenu : ")
 print (calcul)
 #calcul = Calcul(1, 2, "+")
 print(calcul.toNPI())
-print(calcul.eval())
+
+cal2 = Calcul.fromNPI(" 1 2 3 4 + 5 * - 6 7 - 2 ^ 8 * 2 ^ + + ")
+print(cal2)
 
 
