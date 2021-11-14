@@ -19,10 +19,10 @@ def samples():
     result["getExpression(template = \"f+f-f*f\")"] = getExpression(template = "f+f-f*f")
     result["getExpression(\"f+f*f\")"] = getExpression("f+f*f")
     result["getExpression(\"f+e*f\")"] = getExpression("f+e*f")
-    result["getExpression(\"f(e+f)\")"] = getExpression("f*(e+f)")
-    result["getExpression(\"f(e/f)\")"] = getExpression("f+(e+f)")
+    result["getExpression(\"f*(e+f)\")"] = getExpression("f*(e+f)")
+    result["getExpression(\"f+(e+f)\")"] = getExpression("f+(e+f)")
 
-    result["getExpression(\"(f+e)²/(n+e+f)\^(p+n)\")"] = getExpression("(f+e)²/(n+e+f)^(p+n)")
+    result["getExpression(\"(f+e)$^2$/(n+e+f)\\textasciicircum (p+n)\")"] = getExpression("(f+e)²/(n+e+f)^(p+n)")
 
     return result
 
