@@ -1,5 +1,6 @@
 from Tools import randomValue
 from random import random, choice
+from Calcul import Calcul
 
 def samples():
     result = {}
@@ -18,8 +19,10 @@ def samples():
     result["getExpression(template = \"f+f-f*f\")"] = getExpression(template = "f+f-f*f")
     result["getExpression(\"f+f*f\")"] = getExpression("f+f*f")
     result["getExpression(\"f+e*f\")"] = getExpression("f+e*f")
-    result["getExpression(\"f(e+f)\")"] = getExpression("f(e+f)")
-    result["getExpression(\"f(e/f)\")"] = getExpression("f(e+f)")
+    result["getExpression(\"f(e+f)\")"] = getExpression("f*(e+f)")
+    result["getExpression(\"f(e/f)\")"] = getExpression("f+(e+f)")
+
+    result["getExpression(\"(f+e)²/(n+e+f)\^(p+n)\")"] = getExpression("(f+e)²/(n+e+f)^(p+n)")
 
     return result
 
@@ -85,18 +88,23 @@ def convertTemplate(template, min = 1, max = 9, pNeg=.5):
         if c == "f":
             a = randomValue(min, max, pNeg = pNeg)
             b = randomValue(min, max, pNeg = pNeg)
-            result += " \\dfrac{"+str(a)+"}{"+str(b)+"} "
+            result += "("+str(a)+"/"+str(b)+")"
         elif c == "e":
             a = randomValue(min, max, pNeg = pNeg)
-            result += f" {a} "
-        elif c == "*":
-            result += " \\times "
+            result += f"{a}"
+        elif c == "p":
+            a = randomValue(min, max, pNeg = 0)
+            result += f"{a}"
+        elif c == "n":
+            a = randomValue(min, max, pNeg = 1)
+            result += f"{a}"
         else:
             result += c
-    return result
+    calcul = Calcul.fromExpression(result)
+    return calcul.toLatex()
 
 
-def getExpression(template = ""):
+def getExpression(template = "", pNeg = .5):
     if template == "":
         templates = []
         templates.append("f+f*f")
@@ -106,6 +114,6 @@ def getExpression(template = ""):
 
         template = choice(templates)
 
-    return convertTemplate(template)
+    return convertTemplate(template, pNeg)
 
 
