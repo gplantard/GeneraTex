@@ -26,6 +26,35 @@ class Calcul:
 
         return strLeft + "" + self.op + "" + strRight
 
+    def toLatex(self):
+        result = ""
+        if isinstance(self.left, Calcul):
+            if Calcul.comOperator(self.op, self.left.op) and self.op != "/":
+                left = "\\left("+ self.left.toLatex()+"\\right)"
+            else:
+                left = self.left.toLatex()
+        else:
+            left = str(self.left)
+
+        if isinstance(self.right, Calcul):
+            if Calcul.comOperator(self.op, self.right.op) and self.op != "/":
+                right = "\\left("+ self.right.toLatex()+"\\right)"
+            else:
+                right = self.right.toLatex()
+        else:
+            right = str(self.right)
+
+        if self.op == "+":
+            return left + " + " + right
+        if self.op == "-":
+            return left + " - " + right
+        if self.op == "*":
+            return left + " \\times " + right
+        if self.op == "/":
+            return "\\dfrac{"+left+"}{"+right+"}"
+        if self.op == "**" or "^":
+            return left + "^{" + right + "}"
+
     @staticmethod
     def comOperator(op1, op2):
         operateurs = ["+","-","*","/","**","^", "²"]
@@ -173,17 +202,13 @@ class Calcul:
 
 
 #expression ="1*2-34+5*6-8²"
-expression ="1+2-(3+4)*5+((6-7)^2*8)²"
+#expression ="1+(2-(3+4)*5)/((6-7)^2*8)²"
 #expression ="1+2-(f+4)*e²+((6-7)^2*8)²"
-#expression ="1+2*(3+4)"
-print(f"convertion de \n {expression} : ")
+expression ="(1/2)^2"
 calcul = Calcul.fromExpression(expression)
-print("Calcul obtenu : ")
 print (calcul)
 #calcul = Calcul(1, 2, "+")
-print(calcul.toNPI())
-
-cal2 = Calcul.fromNPI(" 1 2 3 4 + 5 * - 6 7 - 2 ^ 8 * 2 ^ + + ")
-print(cal2)
+print("Code Latex :")
+print("$$"+calcul.toLatex()+"$$")
 
 
