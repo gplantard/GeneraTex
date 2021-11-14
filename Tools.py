@@ -21,10 +21,12 @@ def getNumberOrLetter(min, max, p, possibleLetters=None):
   else:
     return str(randomValue(min,max))
 
-def randomValue(min, max, nbDigit=0):
+def randomValue(min, max, nbDigit=0, pNeg=0):
     result = round(random.uniform(min, max),nbDigit)
     if nbDigit == 0:
-        return int(result)
+        result =  int(result)
+    if random.random() < pNeg:
+        result = -result
     return result
 
 def getValideName(defaultName, usedNameList, PossibleName = None):
@@ -62,3 +64,23 @@ def getMatrix(m=None,n=None, p=0, min = -5, max = 5):
     result += valeurs+"\n"
     result += "\\end{pmatrix}"
     return result
+
+def isfloat(x):
+    try:
+        a = float(x)
+    except (TypeError, ValueError):
+        return False
+    else:
+        return True
+
+def isint(x):
+    try:
+        a = float(x)
+        b = int(a)
+    except (TypeError, ValueError):
+        return False
+    else:
+        return a == b
+
+
+
