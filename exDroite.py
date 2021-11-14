@@ -47,7 +47,6 @@ def getLectureAffine(nbDroite = 1 , labelSize = LatexFontSize.large):
     graph = Graphique()
     graph.repere = Repere(xUnitVect = (1,0), yUnitVect = (0,1))
 
-    graph.addPoint(1,2, "B")
 
     for i in range(nbDroite):
         a = randomValue(-5, 5)
