@@ -1,5 +1,10 @@
 from Tools import getValideName, LatexFontSize
 
+# TODO : Placement de point sur les repères non orthogomaux (cartesien)
+# TODO : Choisir graduation complete, graduation des 1, vecteur unitaire ou point I et J
+# TODO : Envisager le paramétrage de l'affichage (couleur, taille...) pour chaque élément
+# TODO : Equation de droites (prevoir paramétrique) \draw[scale=0.5, domain=-3:3, smooth, variable=\x, blue] plot ({\x}, {\x*\x});
+
 class Point:
     possibleName = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
