@@ -76,9 +76,9 @@ def getAbsoluteIneq(nbDigit = 0,  p = 0.2):
 
 
 def getAffine(nbDigit = 0, equation = True, possibleLetter = "x"):
-    a = randomValue(1,9,nbDigit)
-    b = randomValue(1,9,nbDigit)
-    c = randomValue(1,9,nbDigit)
+    a = randomValue(1,20,nbDigit)
+    b = randomValue(1,20,nbDigit)
+    c = randomValue(1,20,nbDigit)
 
     letter = choice(possibleLetter)
     if equation:
@@ -93,10 +93,10 @@ def getAffine(nbDigit = 0, equation = True, possibleLetter = "x"):
     return f"${neg}{a}{letter} {op} {b} {eq} {c}$"
 
 def getDoubleAffine(nbDigit = 0, equation = True, possibleLetter = "x"):
-    a = randomValue(1,9,nbDigit)
-    b = randomValue(1,9,nbDigit)
-    c = randomValue(1,9,nbDigit)
-    d = randomValue(1,9,nbDigit)
+    a = randomValue(1,20,nbDigit)
+    b = randomValue(1,20,nbDigit)
+    c = randomValue(1,20,nbDigit)
+    d = randomValue(1,20,nbDigit)
 
     letter = choice(possibleLetter)
 
@@ -117,10 +117,10 @@ def getDoubleAffine(nbDigit = 0, equation = True, possibleLetter = "x"):
     return f"${neg1}{a}{letter} {op1} {b} {eq} {neg2}{c}{letter} {op2} {d}$"
 
 def getProduitAffine(nbDigit = 0, equation = True, possibleLetter = "x", simple = False):
-    a = randomValue(1,9,nbDigit)
-    b = randomValue(1,9,nbDigit)
-    c = randomValue(1,9,nbDigit)
-    d = randomValue(1,9,nbDigit)
+    a = randomValue(1,20,nbDigit)
+    b = randomValue(1,20,nbDigit)
+    c = randomValue(1,20,nbDigit)
+    d = randomValue(1,20,nbDigit)
 
     letter = choice(possibleLetter)
 
