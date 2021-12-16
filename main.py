@@ -1,6 +1,6 @@
 #import generate2nd
 #import generateTermEsSpe
-#import automatisme
+import automatisme
 
 import pyperclip
 
@@ -27,11 +27,12 @@ def getSamples(modulesNames = None):
                 else:
                     sampleDocument +=  f"\\item {function} :\\\\ \n$${result}$$\n"
             sampleDocument += "\\end{itemize}\n"
-    print (sampleDocument)
-
-    pyperclip.copy(sampleDocument)
-
     return sampleDocument
 
-getSamples()
+#getSamples()
+
+#document_content = getSamples()
+document_content = automatisme.run()
+pyperclip.copy(document_content)
+print(document_content)
 #getSamples(["exFraction"])
