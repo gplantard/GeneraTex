@@ -30,7 +30,7 @@ class Calcul:
     def toLatex(self):
         result = ""
         if isinstance(self.left, Calcul):
-            if Calcul.comOperator(self.op, self.left.op) and self.op != "/":
+            if (Calcul.comOperator(self.op, self.left.op) and self.op != "/") or self.op in ["**", "^"]:
                 left = "\\left("+ self.left.toLatex()+"\\right)"
             else:
                 left = self.left.toLatex()
@@ -38,7 +38,7 @@ class Calcul:
             left = str(self.left)
 
         if isinstance(self.right, Calcul):
-            if Calcul.comOperator(self.op, self.right.op) and self.op != "/":
+            if Calcul.comOperator(self.op, self.right.op) and self.op != "/" or self.op in ["**", "^"]:
                 right = "\\left("+ self.right.toLatex()+"\\right)"
             else:
                 right = self.right.toLatex()
@@ -50,11 +50,17 @@ class Calcul:
         if self.op == "-":
             return left + " - " + right
         if self.op == "*":
-            return left + " \\times " + right
+            if right[0] == "(":
+                return left + "" + right
+            if (not right[0].isdigit()) and (isinstance(self.right, Calcul) and self.right.op not in ["/", "^", "**"]):
+                return left + "" + right
+            if left == "1":
+                return right
+            return left +" \\times "+ right
         if self.op == "/":
-            return "\\dfrac{"+left+"}{"+right+"}"
+            return " \\dfrac{"+left+"}{"+right+"} "
         if self.op == "**" or "^":
-            return left + "^{" + right + "}"
+            return left + "^{" + right + "} "
 
     @staticmethod
     def comOperator(op1, op2):
