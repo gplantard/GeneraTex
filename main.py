@@ -1,6 +1,7 @@
 #import generate2nd
 #import generateTermEsSpe
 import automatisme
+import derive_st2s
 
 import pyperclip
 
@@ -40,6 +41,6 @@ def getSamples(modulesNames = None):
 #getSamples(["exFraction"])
 
 document_content = getSamples(["exFonction"]) #["exExpLog"]
-#document_content = automatisme.run()
+document_content = derive_st2s.run()
 pyperclip.copy(document_content)
 print(document_content)
