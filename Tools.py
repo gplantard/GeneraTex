@@ -82,5 +82,18 @@ def isint(x):
     else:
         return a == b
 
+def wellTyped(x):
+    if isint(x):
+        return int(x)
+    if isfloat(x):
+        return float(x)
+    return x
+
+def getSignedString(x):
+    # TODO : Utiliser cette fonction partout où c'est nécessaire
+    if x > 0 : 
+        return " + "+str(x)
+    else:
+        return str(x)
 
 
