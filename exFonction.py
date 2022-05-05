@@ -17,6 +17,7 @@ def samples():
     result["getExerciceDerivePoly(nbRacine = 1) - Racine Unique"] = getExerciceDerivePoly(nbRacine = 1), False
     result["getExerciceDerivePoly(nbRacine = 2) - Racines forcement différentes"] = getExerciceDerivePoly(nbRacine = 2), False
     result["getExerciceDerivePoly(functionName = 'g')"] = getExerciceDerivePoly(functionName = 'g'), False 
+    result["getExerciceDerivePoly(onlyInt = True)"] = getExerciceDerivePoly(onlyInt = True), False 
     
     return result
 
@@ -49,20 +50,23 @@ def getDivAffine():
         return getDivAffine() # on recommence si la fraction vaut 1
     return "\\dfrac{"+str_num+"}{"+str_den+"}"
 
-def getExerciceDerivePoly(nbRacine = None, functionName = 'f'):
+def getExerciceDerivePoly(nbRacine = None, functionName = 'f', onlyInt = False):
     # TODO : permettre de changer le nom de la fonction
     # ne donne ques des polynome de degré trois pour le moment
-
-    x1 =  randint(1,9) * choice([-1,1])
-    x2 =  randint(1,9) * choice([-1,1])
-    while nbRacine == 2 and x1 == x2:
+    ok = False
+    while (ok == False):
+        x1 =  randint(1,9) * choice([-1,1])
         x2 =  randint(1,9) * choice([-1,1])
-    a =  randint(1,3) * choice([-1,1])
+        while nbRacine == 2 and x1 == x2:
+            x2 =  randint(1,9) * choice([-1,1])
+        a =  randint(1,4) * choice([-1,1])
 
-    if nbRacine == 1:
-        f = Trinome.fromFactor(a,x1,x1)
-    else:
-        f = Trinome.fromFactor(a,x1,x2)
+        if nbRacine == 1:
+            f = Trinome.fromFactor(a,x1,x1)
+        else:
+            f = Trinome.fromFactor(a,x1,x2)
+        if onlyInt == False or (onlyInt and f.a % 3 == 0 and f.b % 2 == 0):
+            ok = True
 
     f_facto = f.toString(Trinome.Forme.FACTORISEE)
     f_dev = f.toString(Trinome.Forme.DEVELOPPEE)
@@ -80,16 +84,18 @@ def getExerciceDerivePoly(nbRacine = None, functionName = 'f'):
 
     if f.b % 2 == 0:
         if f.b == 2:
-            B = ""
+            B = "+"
         elif f.b == -2:
             B = "-"
         else:
-            B = str(f.b//2)
+            B = Tools.getSignedString(f.b//2)
     else:
-        B = "\\dfrac{"+str(f.b)+"}{2}"
+        B = "\\dfrac{"+str(abs(f.b))+"}{2}"
+        if f.b > 0:
+            B = " + " + B
+        elif f.b < 0:
+            B = " - " + B
 
-    if f.b > 0:
-        B = " + " + B
     
     if f.c == 1:
         C = ""
