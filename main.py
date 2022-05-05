@@ -8,6 +8,7 @@ import exMatrice
 import exEquation
 import exDroite
 import exFraction
+import exExpLog
 
 #generate2nd.run()
 #generateTermEsSpe.run()
@@ -30,9 +31,9 @@ def getSamples(modulesNames = None):
     return sampleDocument
 
 #getSamples()
+#getSamples(["exFraction"])
 
-#document_content = getSamples()
-document_content = automatisme.run()
+document_content = getSamples(["exExpLog"])
+#document_content = automatisme.run()
 pyperclip.copy(document_content)
 print(document_content)
-#getSamples(["exFraction"])

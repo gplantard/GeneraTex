@@ -1,4 +1,5 @@
 from random import randint, choice, random
+import Tools
 
 """
 ATTENTION : Pensez à ajouter un exempel dans la fonction ``sample`` afin de pouvoir donn�es un appercu du résusltat
@@ -14,6 +15,12 @@ def samples():
     result["getLogSimplification([3], p = 0, iteration = 3) (nombre de multiplication d'entier)"] = getLogSimplification([3], p = 0, iteration = 3)
     result["getLogSimplification([2,3,5], p = 0, iteration = 4) (nombre de multiplication d'entier)"] = getLogSimplification([2,3,5], p = 0, iteration = 4)
     result["getLogSimplification([2,3,5], p = 0, maxIteration = 5) (nombre max de multiplication d'entier si iteration non défini, defaut : 3 ou 5 si liste donnée)"] = getLogSimplification([2,3,5], p = 0, maxIteration = 5)
+    result["getLogEquation()"] = getLogEquation()
+    result["getLogEquation(onlyInt=True)"] = getLogEquation(onlyInt=False)
+    result["getLogEquation(nbTerm=2) (defaut)"] = getLogEquation(nbTerm=2)
+    result["getLogEquation(nbTerm=3)"] = getLogEquation(nbTerm=3)
+    result["getLogEquation(nbTerm=4)"] = getLogEquation(nbTerm=4)
+    result["getLogEquation(onlyInt=True, nbTerm=4)"] = getLogEquation(nbTerm=4)
     #result["getLogSimplificationConsigne()"] = getLogSimplificationConsigne()
     #result["getLogSimplificationConsigne([2,3,5])"] = getLogSimplificationConsigne([2,3,5])
     return result
@@ -56,3 +63,38 @@ def getLogSimplification(logs=None, p=0.5, iteration = None, maxIteration = 3):
         return a
 
     return f"\\log({get_number(logs, p, iteration, maxIteration)})"
+
+def getLogEquation(onlyInt = False, nbTerm = 2):
+
+    
+    if nbTerm > 4:
+        nbTerm = 4
+    if nbTerm < 2:
+        nbTerm = 2
+
+    content = ""
+    var ={"a":1,"b":1,"c":1,"d":1}
+    if onlyInt:
+        var["a"] = randint(1, 100)
+        var["b"] = randint(1, 100)
+        var["c"] = randint(1, 100)
+        var["d"] = randint(1, 100)
+    else :
+        for v in var.keys():
+            val = round(random(), 4)*10**(randint(0,3))
+            if val == int(val):
+                val = int(val)
+            var[v] = val
+
+    a = var["a"]
+    b = var["b"]
+    c = var["c"]
+    d = var["d"]
+    
+    if nbTerm == 2:
+        content = f"{a}^x = {b}"
+    elif nbTerm == 3:
+        content = f"{c} \\times {a}^x = {b}"
+    else:
+        content = str(c) + " \\times " + str(a) + "^x = "+ str(d) + " ^ {" + str(b) + "}"
+    return content
